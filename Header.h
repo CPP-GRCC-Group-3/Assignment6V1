@@ -32,6 +32,7 @@ private:
 
 	//Score Values
 	int correctGuessPoints = 100;
+	int hintMinusPoints = -50;
 	int incorrectGuessPoints = -10;
 	int finishWordScore = 500;
 	int currentScore;
@@ -52,7 +53,8 @@ public:
 	void CreateVector();
 	bool gameState();
 	bool checkGuess(string&);
-	
+
+	void displayHint();
 	void addToScore(int&);
 	void setCurrentScore(int);
 	int getCurrentScore();

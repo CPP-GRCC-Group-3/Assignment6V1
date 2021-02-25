@@ -18,6 +18,8 @@ using namespace std;
 int winCount = 0;
 int lossCount = 0;
 
+vector<string> guessBank;
+
 string hidden;
 
 //display word in given position in the array
@@ -33,6 +35,12 @@ void GameHandler::display(bool typeCheck, int& n) {
 		cout << endl << "Position " << n << ": " << wordsVector[n - 1] << endl << endl;
 	}
 
+}
+
+void GameHandler::displayHint() {
+	cout << hidden.at(0) << endl;
+	addToScore(hintMinusPoints);
+	
 }
 
 //get word, and "hide it" from displaying
@@ -74,12 +82,14 @@ bool GameHandler::ValidateMenuScope(int& menu) {
 bool GameHandler::checkGuess(string& guess) {
 
 	//if guess is correct
-	if (hidden.find(guess) != std::string::npos) {
+	if (hidden.find(guess) != std::string::npos && !count(guessBank.begin(), guessBank.end(), guess)) {
 
 		winCount = winCount + 1;
 		addToScore(correctGuessPoints);
 
 		cout << "You have guessed " << winCount << " letters correct!" << endl;
+
+		guessBank.push_back(guess);
 
 		return true;
 	}
@@ -119,6 +129,7 @@ bool GameHandler::gameState() {
 		writeScoreToFile(initials, currentScore);
 
 		setCurrentScore(0);
+		guessBank.clear();
 
 		winCount = 0;
 		lossCount = 0;
@@ -185,7 +196,7 @@ void GameHandler::readScoreFile() {
 	int score;
 
 	file.open(scoreFile);
-	
+
 	while (getline(file, line)) {
 
 		name = line.substr(0, 3);
